@@ -25,6 +25,8 @@ public class CAPBridgeViewController: UIViewController, CAPBridgeDelegate, WKScr
   private var isStatusBarVisible = true
   private var statusBarStyle: UIStatusBarStyle = .default
   @objc public var supportedOrientations: Array<Int> = []
+    
+  weak public var navigationDelegate: WKNavigationDelegate?
   
   // Construct the Capacitor runtime
   public var bridge: CAPBridge?
@@ -70,7 +72,7 @@ public class CAPBridgeViewController: UIViewController, CAPBridgeDelegate, WKScr
     loadWebView()
   }
   
-  func loadWebView() {
+  public func loadWebView() {
     if Bundle.main.path(forResource: "public/index", ofType: "html") == nil {
       print("⚡️  FATAL ERROR: Unable to load public/index.html")
       print("⚡️  This file is the root of your web app and must exist before")
@@ -182,6 +184,10 @@ public class CAPBridgeViewController: UIViewController, CAPBridgeDelegate, WKScr
   public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
     print("⚡️  WebView failed provisional navigation")
     print("⚡️  Error: " + error.localizedDescription)
+    
+    guard let delegate = self.navigationDelegate else { return }
+    
+    delegate.webView?(webView, didFailProvisionalNavigation: navigation, withError: error)
   }
 
   public override func canPerformUnwindSegueAction(_ action: Selector, from fromViewController: UIViewController, withSender sender: Any) -> Bool {
