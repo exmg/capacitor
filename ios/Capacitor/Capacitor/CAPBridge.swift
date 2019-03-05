@@ -48,7 +48,14 @@ enum BridgeError: Error {
     self.bridgeDelegate = bridgeDelegate
     self.userContentController = userContentController
     self.notificationsDelegate = CAPUNUserNotificationCenterDelegate()
-    CAPConfig.loadConfig()
+    
+    let bridgeViewController = self.bridgeDelegate.bridgedViewController as! CAPBridgeViewController
+    if let configFile = bridgeViewController.configOverrideFile {
+        CAPConfig.loadConfig(file: configFile)
+    } else {
+        CAPConfig.loadConfig()
+    }
+    
     super.init()
     self.notificationsDelegate.bridge = self;
     localUrl = "\(CAPBridge.CAP_SCHEME)://\(CAPConfig.getString("server.hostname") ?? "localhost")"

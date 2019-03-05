@@ -14,9 +14,13 @@
   public static func loadConfig() {
     CAPConfig.getInstance()._loadConfig()
   }
+    
+  public static func loadConfig(file: String) {
+    CAPConfig.getInstance()._loadConfig(file: file)
+  }
   
-  private func _loadConfig() {
-    guard let configUrl = Bundle.main.url(forResource: "capacitor.config", withExtension: "json") else {
+  private func _loadConfig(file: String = "capacitor.config") {
+    guard let configUrl = Bundle.main.url(forResource: file, withExtension: "json") else {
       print("Unable to find capacitor.config.json, make sure it exists and run npx cap copy")
       return
     }

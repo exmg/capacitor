@@ -27,10 +27,10 @@ public class CAPBridgeViewController: UIViewController, CAPBridgeDelegate, WKScr
   @objc public var supportedOrientations: Array<Int> = []
     
   weak public var navigationDelegate: WKNavigationDelegate?
+  public var configOverrideFile: String?
   
   // Construct the Capacitor runtime
   public var bridge: CAPBridge?
-  
   
   override public func loadView() {
     setStatusBarDefaults()
